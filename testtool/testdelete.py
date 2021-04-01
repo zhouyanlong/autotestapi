@@ -35,7 +35,6 @@ print(res1)"""
 df=pandas.read_excel("../config/apicase.xlsx",sheet_name="Sheet1")
 #print(df.values)
 #print(df.ix[1,1])
-
 # num1=time.strftime("%Y%m%d%H%M%S", time.localtime())
 # print(num1)
 #

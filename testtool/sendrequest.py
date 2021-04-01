@@ -3,7 +3,6 @@ import json
 from testtool.readexcel import Read_Excel
 from testtool.mylog import Log
 from testtool.login import login
-from testtool.apiimport import import_data
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 class Send_Request():
@@ -115,7 +114,7 @@ class Send_Request():
             return value
         except Exception as e:
             Log().error(e)
-
+    #发送接口导案
     def send_import(self,data):
 
         try:
@@ -130,11 +129,11 @@ class Send_Request():
             else:
                 method = None
             if data["headers"]:
-                h = data["headers"]
+                h = eval(data["headers"])
             else:
                 h = None
             if data["body"]:
-                body = data["body"]
+                body = eval(data["body"])
             else:
                 body = None
         except Exception as e:
@@ -152,8 +151,8 @@ if __name__ == '__main__':
     # print(r1)
     # re=Send_Request().get_list_data(r1,login(),"upStatus")
     # print(re,type(re))
-
-
+    a=Read_Excel().read_importdata()
+    Send_Request().send_import(a)
     # re=Send_Request().send_req(r1,login())
     # print(re.json())
     # body=eval(re.request.body)
@@ -162,5 +161,3 @@ if __name__ == '__main__':
     # res=re.json()[me]["list"]
     # print(res)
 
-    da=import_data()
-    Send_Request().send_import(da)

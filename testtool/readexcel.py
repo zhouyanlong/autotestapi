@@ -2,12 +2,12 @@ import openpyxl
 from testtool.setconfig import Tool
 from testtool import setting
 from testtool.mylog import Log
-from testtool.apiimport import import_data
+import datetime,time
 class Read_Excel():
 
     def read_data(self,file=setting.testcasedir):
         #wb=openpyxl.load_workbook("../config/apicase.xlsx")
-        apidata = import_data()
+        apidata = Read_Excel().read_importdata()
         print(apidata["packetName"])
         wb = openpyxl.load_workbook(file)
         sheet=wb["Sheet1"]
@@ -29,10 +29,8 @@ class Read_Excel():
                         body = body.replace("${billcode}", apidata["billcode"])
                     if body.find("${customercode}") != -1:
                         body = body.replace("${customercode}", str(apidata["customercode"]))
-                    if body.find("${idNumber}") != -1:
-                        body = body.replace("${idNumber}", str(apidata["idNumber"]))
-                    if body.find('${taskname}') != -1:
-                        body = body.replace('${taskname}', str(apidata["taskname"]))
+                    if body.find("${name}") != -1:
+                        body = body.replace("${name}", str(apidata["name"]))
                     if body.find('${starttime}') != -1:
                         body = body.replace('${starttime}', str(apidata["starttime"]))
                     if body.find('${endtime}') != -1:
@@ -50,10 +48,9 @@ class Read_Excel():
                         checkdata = checkdata.replace("${billcode}", apidata["billcode"])
                     if checkdata.find("${customercode}") != -1:
                         checkdata = checkdata.replace("${customercode}", str(apidata["customercode"]))
-                    if checkdata.find("${idNumber}") != -1:
-                        checkdata = checkdata.replace("${idNumber}", str(apidata["idNumber"]))
-                    if checkdata.find('${taskname}') != -1:
-                        checkdata = checkdata.replace('${taskname}', str(apidata["taskname"]))
+                    if checkdata.find("${name}") != -1:
+                        checkdata = checkdata.replace("${name}", str(apidata["name"]))
+
                 sqldata=sheet.cell(i,11).value
                 if sqldata is not None:
                     if sqldata.find("${packet_name}") != -1:
@@ -62,10 +59,9 @@ class Read_Excel():
                         sqldata = sqldata.replace("${billcode}", apidata["billcode"])
                     if sqldata.find("${customercode}") != -1:
                         sqldata = sqldata.replace("${customercode}", str(apidata["customercode"]))
-                    if sqldata.find("${idNumber}") != -1:
-                        sqldata = sqldata.replace("${idNumber}", str(apidata["idNumber"]))
-                    if sqldata.find('${taskname}') != -1:
-                        sqldata = sqldata.replace('${taskname}', str(apidata["taskname"]))
+                    if sqldata.find("${name}") != -1:
+                        sqldata = sqldata.replace("${name}", str(apidata["name"]))
+
                 sqlassert = sheet.cell(i, 12).value
                 if sqlassert is not None:
                     if sqlassert.find("${packet_name}") != -1:
@@ -74,10 +70,9 @@ class Read_Excel():
                         sqlassert = sqldata.replace("${billcode}", apidata["billcode"])
                     if sqlassert.find("${customercode}") != -1:
                         sqlassert = sqldata.replace("${customercode}", str(apidata["customercode"]))
-                    if sqlassert.find("${idNumber}") != -1:
-                        sqlassert = sqldata.replace("${idNumber}", str(apidata["idNumber"]))
-                    if sqlassert.find('${taskname}') != -1:
-                        sqlassert = sqldata.replace('${taskname}', str(apidata["taskname"]))
+                    if sqlassert.find("${name}") != -1:
+                        sqlassert = sqlassert.replace("${name}", str(apidata["name"]))
+
                 data = {"module": module, "id": id,"usecase":usecase, "url": url, "headers": header, "method": method, "body": body,
                         "code": code, "msg": msg,"checkdata":checkdata,"sqldata":sqldata,"sqlassert":sqlassert}
                 #print(data)
@@ -96,16 +91,66 @@ class Read_Excel():
         sheet.cell(i,13).value=value
         wb.save(file)
 
-    def updata_excel(self,i,value,file=setting.testcasedir):
+    def read_importdata(self,file=setting.testcasedir):
         wb=openpyxl.load_workbook(file)
-        sheet=wb["Sheet1"]
-        sheet.cell(i,11).value=value
+        sheet=wb["Sheet2"]
+
+        url = sheet.cell(2, 1).value
+        method = sheet.cell(2, 2).value
+        headers = sheet.cell(2, 3).value
+        body = sheet.cell(2, 4).value
+        packetName = sheet.cell(2, 5).value
+        namenum = sheet.cell(2, 6).value
+        code = sheet.cell(2, 7).value
+        limitDate = time.strftime("%Y/%m/%d", time.localtime())
+        now = datetime.datetime.now()
+        starttime = str(now.strftime('%Y-%m-%d')) + " 00:00:00"
+        dif = datetime.timedelta(days=0)
+        tomorrow = now - dif
+        endtime = tomorrow.strftime('%Y-%m-%d')
+        endtime += " 23:59:59"
+        startDate = now.strftime('%Y-%m-%d')
+
+        name="周彦龙" + str(namenum)
+        packetName="test委案"+str(packetName)
+        billcode=str(code)+str(code)+"11"
+        customercode=name+"333333333333333333"
+        if body.find("${packetName}")!=-1:
+            body=body.replace("${packetName}",str(packetName))
+        if body.find("${packetMerCode}")!=-1:
+            body=body.replace("${packetMerCode}",str(code))
+        if body.find("${limitDate}")!=-1:
+            body=body.replace("${limitDate}",str(limitDate))
+        if body.find("${name}")!=-1:
+            body=body.replace("${name}",str(name))
+        data = {"url": url, "headers": headers, "method": method, "body": body,"name":name,"billcode": billcode, "customercode": customercode, "packetName": packetName,"starttime": starttime, "endtime": endtime, "startDate": startDate}
+        print(data)
+        Log().info("读取导入数据中packetName:{}，name:{}，billcode:{}，customercode:{}".format(packetName,name,billcode,customercode))
+        return data
+
+    def update_importdata(self,file=setting.testcasedir):
+        wb=openpyxl.load_workbook(file)
+        sheet=wb["Sheet2"]
+        packetName = sheet.cell(2, 5).value
+        name = sheet.cell(2, 6).value
+        code = sheet.cell(2, 7).value
+        packetNamenew=int(packetName)+1
+        codenew=int(code)+1
+        namenew=int(name)+1
+        sheet.cell(2, 5).value = packetNamenew
+        sheet.cell(2, 6).value = namenew
+        sheet.cell(2, 7).value = codenew
+        Log().info("更新后的packet:{}，namenum:{}，code:{}".format(sheet.cell(2, 5).value,sheet.cell(2, 6).value,sheet.cell(2, 7).value))
         wb.save(file)
 
 
+
 if __name__ == '__main__':
-    test=Read_Excel().read_data()
-    print(test[0]["checkdata"])
+    #test=Read_Excel().read_data()
+    #print(test[0]["checkdata"])
+    test = Read_Excel().read_importdata()
+    up=Read_Excel().update_importdata()
+    test1 = Read_Excel().read_importdata()
     # a=eval(test[0]['checkdata'])[0]
     # print(a)
 
