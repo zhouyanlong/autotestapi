@@ -5,10 +5,9 @@ from testtool.mylog import Log
 import datetime,time
 class Read_Excel():
 
-    def read_data(self,file=setting.testcasedir):
+    def read_data(self,file):
         #wb=openpyxl.load_workbook("../config/apicase.xlsx")
         apidata = Read_Excel().read_importdata()
-        print(apidata["packetName"])
         wb = openpyxl.load_workbook(file)
         sheet=wb["Sheet1"]
         test_data=[]

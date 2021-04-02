@@ -5,27 +5,27 @@ from testtool.sendrequest import Send_Request
 from testtool.mylog import Log
 from testtool.login import adminlogin
 from testtool.dbmysql import DB
+from testtool import setting
 import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-test_data = Read_Excel().read_data()
+test_data = Read_Excel().read_data(setting.testcaseadmindir)
 session = adminlogin()
 
 
 @ddt.ddt
-class TestApi(unittest.TestCase):
+class TestadminApi(unittest.TestCase):
     def setUp(self) -> None:
         Log().info("test starts")
 
     @ddt.data(*test_data)
     def test_case(self, testdata):
-        Log().info("用例{}:{}正在执行".format(testdata["id"], testdata["usecase"]))
+        Log().info("管理端用例{}:{}正在执行".format(testdata["id"], testdata["usecase"]))
         Log().info("用例{}的请求数据为{}".format(testdata["id"], testdata))
         Log().info("session为{},类型为{}".format(session, type(session)))
         re = Send_Request().send_req(testdata, session)
         res = re.json()
         Log().info("响应结果为{}".format(res))
-
         body = eval(re.request.body)
         me = body["method"]
         method = str(me) + "_response"
@@ -106,13 +106,5 @@ class TestApi(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-    """suite = unittest.TestSuite()
-    suite.addTest(TestApi("test_case"))
-    runner = unittest.TextTestRunner(verbosity=2)
-    runner.run(suite)"""
-    """suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestApi))
-    runner = unittest.TextTestRunner(verbosity=2)
-    runner.run(suite)"""
-    # unittest.main()
+
 

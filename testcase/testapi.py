@@ -5,9 +5,10 @@ from testtool.sendrequest import Send_Request
 from testtool.mylog import Log
 from testtool.login import login
 from testtool.dbmysql import DB
+from testtool import setting
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-test_data=Read_Excel().read_data()
+test_data=Read_Excel().read_data(setting.testcasedir)
 importdata=Read_Excel().read_importdata()
 Read_Excel().update_importdata()
 Send_Request().send_import(importdata)
