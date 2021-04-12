@@ -27,7 +27,6 @@ class TestApi(unittest.TestCase):
         re=Send_Request().send_req(testdata,session)
         res=re.json()
         Log().info("响应结果为{}".format(res))
-
         body = eval(re.request.body)
         me = body["method"]
         method = str(me) + "_response"

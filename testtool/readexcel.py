@@ -123,7 +123,6 @@ class Read_Excel():
         if body.find("${name}")!=-1:
             body=body.replace("${name}",str(name))
         data = {"url": url, "headers": headers, "method": method, "body": body,"name":name,"billcode": billcode, "customercode": customercode, "packetName": packetName,"starttime": starttime, "endtime": endtime, "startDate": startDate}
-        print(data)
         Log().info("读取导入数据中packetName:{}，name:{}，billcode:{}，customercode:{}".format(packetName,name,billcode,customercode))
         return data
 
