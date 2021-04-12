@@ -20,8 +20,8 @@ def adminlogin():
     session_data = re["data"]["session"]
     session = {"session": session_data}
     Log().info("管理端获取到的session为{}".format(session))
-
+    return session
 
 if __name__ == '__main__':
-    login()
+    adminlogin()
 

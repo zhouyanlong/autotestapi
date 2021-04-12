@@ -8,7 +8,10 @@ def add_case(file=setting.testpydir):
     #加载所有的测试用例
     discover=unittest.defaultTestLoader.discover(file,pattern="testapi.py")
     return discover
-
+def add_admincase(file=setting.testpydir):
+    #加载所有的测试用例
+    discover1=unittest.defaultTestLoader.discover(file,pattern="testadminapi.py")
+    return discover1
 def run_api(case,file=setting.reportdir):
     #按照testcase执行
     now = time.strftime("%Y-%m-%d %H_%M_%S")
@@ -28,6 +31,7 @@ def run_api(case,file=setting.reportdir):
 
 if __name__ == '__main__':
     case=add_case()
+    #admin_case=add_admincase()
     run_api(case)
-
+    #run_api(admin_case)
 

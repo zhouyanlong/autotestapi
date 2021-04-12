@@ -10,9 +10,8 @@ import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 test_data = Read_Excel().read_data(setting.testcaseadmindir)
+Read_Excel().update_importdata()
 session = adminlogin()
-
-
 @ddt.ddt
 class TestadminApi(unittest.TestCase):
     def setUp(self) -> None:
@@ -35,10 +34,10 @@ class TestadminApi(unittest.TestCase):
             res_msg = res["error_response"]["msg"]
             Log().info("用例{}的响应code为{},响应msg为{}".format(testdata["id"], res_code, res_msg))
             if res_code == int(testdata["code"]) and res_msg == testdata["msg"]:
-                Read_Excel().write_excel(int(testdata["id"]) + 1, "成功")
+                Read_Excel().write_excel(int(testdata["id"]) - 174, "成功",setting.testcaseadmindir)
                 Log().info("用例{}：成功".format(testdata["id"]))
             else:
-                Read_Excel().write_excel(int(testdata["id"]) + 1, "失败")
+                Read_Excel().write_excel(int(testdata["id"]) - 174, "失败",setting.testcaseadmindir)
                 Log().info("用例{}：失败".format(testdata["id"]))
             self.assertEqual(res_code, int(testdata["code"]),
                              "响应code为{0}，预期code为{1}".format(res_code, testdata["code"]))
@@ -51,10 +50,10 @@ class TestadminApi(unittest.TestCase):
             sql_res = DB().select(db, sql)
             Log().info("sql查询的结果为{}，预期结果为{}".format(str(sql_res), sql_assert))
             if str(sql_res) == sql_assert:
-                Read_Excel().write_excel(int(testdata["id"]) + 1, "成功")
+                Read_Excel().write_excel(int(testdata["id"]) - 174, "成功",setting.testcaseadmindir)
                 Log().info("用例{}：成功".format(testdata["id"]))
             else:
-                Read_Excel().write_excel(int(testdata["id"]) + 1, "失败")
+                Read_Excel().write_excel(int(testdata["id"]) - 174, "失败",setting.testcaseadmindir)
                 Log().info("用例{}：失败".format(testdata["id"]))
             self.assertEqual(str(sql_res), sql_assert, "sql查询的结果为{}，预期结果为{}".format(str(sql_res), sql_assert))
         # 返回字典
@@ -65,10 +64,10 @@ class TestadminApi(unittest.TestCase):
             res_list = Send_Request().get_list_data(testdata, session, checkkey)
             Log().info("响应中需要断言的数据为{},checkvalue为{}".format(res_list, checkvalue))
             if str(res_list) == checkvalue:
-                Read_Excel().write_excel(int(testdata["id"]) + 1, "成功")
+                Read_Excel().write_excel(int(testdata["id"]) - 174, "成功",setting.testcaseadmindir)
                 Log().info("用例{}：成功".format(testdata["id"]))
             else:
-                Read_Excel().write_excel(int(testdata["id"]) + 1, "失败")
+                Read_Excel().write_excel(int(testdata["id"]) - 174, "失败",setting.testcaseadmindir)
                 Log().info("用例{}：失败".format(testdata["id"]))
             self.assertEqual(str(res_list), checkvalue, "响应data为{0}，预期data为{1}".format(str(res_list), checkvalue))
         # 返回list
@@ -79,10 +78,10 @@ class TestadminApi(unittest.TestCase):
             res_list = Send_Request().get_res_data(testdata, session, checkkey)
             Log().info("响应中需要断言的数据为{},checkvalue为{}".format(res_list, checkvalue))
             if res_list == checkvalue:
-                Read_Excel().write_excel(int(testdata["id"]) + 1, "成功")
+                Read_Excel().write_excel(int(testdata["id"]) - 174, "成功",setting.testcaseadmindir)
                 Log().info("用例{}：成功".format(testdata["id"]))
             else:
-                Read_Excel().write_excel(int(testdata["id"]) + 1, "失败")
+                Read_Excel().write_excel(int(testdata["id"]) - 174, "失败",setting.testcaseadmindir)
                 Log().info("用例{}：失败".format(testdata["id"]))
             self.assertEqual(res_list, checkvalue, "响应data为{0}，预期data为{1}".format(res_list, checkvalue))
 
@@ -90,14 +89,14 @@ class TestadminApi(unittest.TestCase):
         elif testdata["checkdata"] is None and "total" in res[method].keys():
             Log().info("响应结果应该为空，响应的total为{}".format(res[method]["total"]))
             if int(res[method]["total"]) == 0:
-                Read_Excel().write_excel(int(testdata["id"]) + 1, "成功")
+                Read_Excel().write_excel(int(testdata["id"]) - 174, "成功",setting.testcaseadmindir)
                 Log().info("用例{}：成功".format(testdata["id"]))
             else:
-                Read_Excel().write_excel(int(testdata["id"]) + 1, "失败")
+                Read_Excel().write_excel(int(testdata["id"]) - 174, "失败",setting.testcaseadmindir)
                 Log().info("用例{}：失败".format(testdata["id"]))
             self.assertEqual(int(res[method]["total"]), 0, "响应data为{0}".format(int(res[method]["total"])))
         else:
-            Read_Excel().write_excel(int(testdata["id"]) + 1, "成功")
+            Read_Excel().write_excel(int(testdata["id"]) - 174, "成功",setting.testcaseadmindir)
             Log().info("用例{}：成功".format(testdata["id"]))
 
     def tearDown(self) -> None:

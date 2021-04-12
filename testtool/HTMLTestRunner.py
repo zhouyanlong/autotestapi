@@ -399,7 +399,7 @@ table       { font-size: 100%; }
 
     REPORT_CLASS_TMPL = r"""
 <tr class='%(style)s warning'>
-    <td>%(desc)s</td>
+    <td class="text-center">%(desc)s</td>
     <td class="text-center">%(count)s</td>
     <td class="text-center">%(Pass)s</td>
     <td class="text-center">%(error)s</td>

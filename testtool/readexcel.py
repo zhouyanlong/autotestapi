@@ -84,7 +84,7 @@ class Read_Excel():
             Log().error(e)
         return test_data
 
-    def write_excel(self,i,value,file=setting.testcasedir):
+    def write_excel(self,i,value,file):
         wb=openpyxl.load_workbook(file)
         sheet=wb["Sheet1"]
         sheet.cell(i,13).value=value
@@ -147,12 +147,13 @@ class Read_Excel():
 if __name__ == '__main__':
     #test=Read_Excel().read_data()
     #print(test[0]["checkdata"])
-    test = Read_Excel().read_importdata()
-    up=Read_Excel().update_importdata()
-    test1 = Read_Excel().read_importdata()
+    # test = Read_Excel().read_importdata()
+    # up=Read_Excel().update_importdata()
+    # test1 = Read_Excel().read_importdata()
     # a=eval(test[0]['checkdata'])[0]
     # print(a)
-
+    test_data = Read_Excel().read_data(setting.testcaseadmindir)
+    print(test_data)
 
 
 
