@@ -104,7 +104,6 @@ class TestApi(unittest.TestCase):
 
 
 
-
     def tearDown(self) -> None:
         Log().info("test ends")
 
