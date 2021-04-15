@@ -26,7 +26,7 @@ def run_api(case,file=setting.reportdir):
     # 调用模块生成最新的报告
     report = new_report()
     # 调用发送邮件模块
-    #send_mail(report)
+    send_mail(report)
     
 
 if __name__ == '__main__':
