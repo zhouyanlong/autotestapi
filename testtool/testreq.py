@@ -30,6 +30,17 @@ class Testacd2():
             print(cookie)
         #print(res2.json(), res2.cookies)
         return res2.cookies
+    def testlogin(self):
+        requests.packages.urllib3.disable_warnings()
+        data = {'url': 'https://test.robotsh.com/api/business/login',
+                'headers': '{"Content-Type": "application/json;charset=UTF-8", "Accept": "application/json, text/plain, */*"}',
+                'method': 'post', 'body': '{"account":"zhou3","password":"Aa123456.","platform":"robot"}'}
+        res = requests.request(url=data["url"], method=data["method"], headers=eval(data["headers"]), data=data["body"],verify=False)
+        re = res.json()
+        session_data = re["data"]["session"]
+        session = {"session": session_data}
+        print("商户端获取到的session为{}".format(session))
+
 if __name__ == '__main__':
     url1 = "https://robotmeracd.zhilingsd.com/api/login"
     body1 = {"userAccount": "sclj02", "password": "Aa123456."}
@@ -38,6 +49,22 @@ if __name__ == '__main__':
     test1=Testacd2().test_getuser(url1,body1)
     #print(test1)
     test2=Testacd2().test_getuser(url2,body2)
+    Testacd2().testlogin()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #使用session
 """class Testacd2():
     def test_login(self,url,data):
