@@ -1,3 +1,7 @@
+import sys,os
+curPath = os.path.abspath(os.path.dirname(__file__))
+rootPath = os.path.split(curPath)[0]
+sys.path.append(rootPath)
 from testtool.mylog import Log
 import requests
 import urllib3
@@ -23,5 +27,5 @@ def adminlogin():
     return session
 
 if __name__ == '__main__':
+    login()
     adminlogin()
-
