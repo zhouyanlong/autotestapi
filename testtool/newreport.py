@@ -2,7 +2,7 @@ import os
 from testtool import setting
 def new_report(testreport=setting.reportdir):
     lists=os.listdir(testreport)
-    lists.sort(key=lambda fn: os.path.getmtime(testreport+"\\"+fn))
+    lists.sort(key=lambda fn: os.path.getmtime(testreport+r"/"+fn))
     file_list=[]
     file_new=os.path.join(testreport,lists[-1])
     file_list.append(file_new)
@@ -15,5 +15,3 @@ def new_report(testreport=setting.reportdir):
 if __name__ == '__main__':
     a=new_report()
     print(a)
-    for i in a:
-        print(i)
