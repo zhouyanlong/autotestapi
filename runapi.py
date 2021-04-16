@@ -31,7 +31,6 @@ def run_api(case,file=setting.reportdir):
 
 if __name__ == '__main__':
     case=add_case()
-    admin_case=add_admincase()
     run_api(case)
+    admin_case=add_admincase()
     run_api(admin_case)
-

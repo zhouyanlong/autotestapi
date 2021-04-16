@@ -24,10 +24,10 @@ def send_mail(file):
     msg['Subject'] = Header(SUBJECT, "utf-8")
     msg['from'] = SENDER
     msg['to'] = RECEIVER
-    for i in file:
-        att = MIMEApplication(open(i, 'rb').read())
-        att.add_header('Content-Disposition', 'attachment', filename=i)
-        msg.attach(att)
+
+    att = MIMEApplication(open(file, 'rb').read())
+    att.add_header('Content-Disposition', 'attachment', filename=file)
+    msg.attach(att)
 
     try:
         server = smtplib.SMTP()
