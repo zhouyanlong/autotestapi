@@ -21,7 +21,7 @@ def login():
 "Sec-Fetch-Dest": "empty",
 "Sec-Fetch-Mode": "cors",
 "Sec-Fetch-Site": "same-origin",
-"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"
+"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0"
 }, 'method': 'post', 'body': '{"account":"zhou3","password":"Aa123456.","platform":"robot"}'}
     res=requests.request(url=data["url"],method=data["method"],headers=data["headers"],data=data["body"],verify=False)
     re=res.json()
@@ -42,4 +42,4 @@ def adminlogin():
 
 if __name__ == '__main__':
     login()
-    #adminlogin()
+    adminlogin()
