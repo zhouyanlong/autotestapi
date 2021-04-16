@@ -1,7 +1,10 @@
+import sys,os
+curPath = os.path.abspath(os.path.dirname(__file__))
+rootPath = os.path.split(curPath)[0]
+sys.path.append(rootPath)
 from testtool.setconfig import Tool
 from testtool.readexcel import Read_Excel
 T=Tool().get_config("tester","name")
-#print(T)
 
 class TestMethod():
     #初始化方法

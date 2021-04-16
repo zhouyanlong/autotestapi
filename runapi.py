@@ -1,3 +1,7 @@
+import sys,os
+curPath = os.path.abspath(__file__)
+rootPath = os.path.split(curPath)[0]
+sys.path.append(rootPath)
 from testtool import setting
 import unittest
 import time
