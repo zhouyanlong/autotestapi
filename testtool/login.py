@@ -22,8 +22,8 @@ def login():
 "Sec-Fetch-Mode": "cors",
 "Sec-Fetch-Site": "same-origin",
 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0"
-}, 'method': 'post', 'body': '{"account":"zhou3","password":"Aa123456.","platform":"robot"}'}
-    res=requests.request(url=data["url"],method=data["method"],headers=data["headers"],data=data["body"],verify=False)
+}, 'method': 'post', 'body': '{"account":"zhou3","password":"Aa123456.","platform":"robot"}',"proxies":{"http":None,"https":None}}
+    res=requests.request(url=data["url"],method=data["method"],headers=data["headers"],data=data["body"],verify=False,proxies=data["proxies"])
     re=res.json()
     session_data=re["data"]["session"]
     session={"session":session_data}
@@ -32,8 +32,8 @@ def login():
 def adminlogin():
     data = {'url': 'https://admintest.robot.com/api/manage/login',
             'headers': '{"Content-Type": "application/json;charset=UTF-8","Accept": "application/json, text/plain, */*"}',
-            'method': 'post', 'body': '{"account":"zhouyanlong1","password":"Aa123456@"}'}
-    res = requests.request(url=data["url"], method=data["method"], headers=eval(data["headers"]), data=data["body"],verify=False)
+            'method': 'post', 'body': '{"account":"zhouyanlong1","password":"Aa123456@"}',"proxies":{"http":None,"https":None}}
+    res = requests.request(url=data["url"], method=data["method"], headers=eval(data["headers"]), data=data["body"],verify=False,proxies=data["proxies"])
     re = res.json()
     session_data = re["data"]["session"]
     session = {"session": session_data}
