@@ -31,7 +31,6 @@ def run_api(case,file=setting.reportdir):
     report = new_report()
     # 调用发送邮件模块
     send_mail(report)
-    
 
 if __name__ == '__main__':
     case=add_case()
