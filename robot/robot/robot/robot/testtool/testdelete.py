@@ -1,9 +1,11 @@
-import sys,os
+
+
+import sys,os,time
 curPath = os.path.abspath(os.path.dirname(__file__))
 rootPath = os.path.split(curPath)[0]
 sys.path.append(rootPath)
+
 from testtool.setconfig import Tool
-from testtool.readexcel import Read_Excel
 T=Tool().get_config("tester","name")
 
 class TestMethod():
@@ -23,15 +25,5 @@ class TestMethod():
     def method3():
         print("我是静态方法")
 
-if __name__ == '__main__':
-    #必须要用实例调用
-    TestMethod("a",1).method1()
-    #TestMethod.method1()
-    #可以直接类名.方法名调用,无法调用类里的属性（如self.name）
-    TestMethod.method2()
-    TestMethod.method3()
-    a=[1,2,3]
-    for j in a:
-        print(j)
-
-
+d=time.strftime("%Y%m%d%H%M%S", time.localtime())
+print(type(d))
