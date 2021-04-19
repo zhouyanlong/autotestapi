@@ -1,2 +1,0 @@
-2021-04-19 09:20:58,163 - 接口测试 - INFO - 商户端获取到的session为{'session': 'user_session_cache:business:robot:1453396611397713920:629765ae-5805-4218-bcc1-d3d99da9412a'}
-2021-04-19 09:20:59,159 - 接口测试 - INFO - 管理端获取到的session为{'session': 'user_session_cache:manage:0a5646ac-d752-478d-8e2c-c54a1b4e297c'}
