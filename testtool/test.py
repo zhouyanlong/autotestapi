@@ -34,19 +34,4 @@ if __name__ == '__main__':
     for j in a:
         print(j)
 
-    nameid = "449"
-    name = "周彦龙" + nameid
-    print(name)
-    nameid=str(int(nameid)+1)
-    name = "周彦龙" + nameid
-    print(name)
-    #print(len(a))
-    """for i in range(len(a)):
-        b=[1,3,4]
-        if a[i] in b:
-            print(a[i])"""
-
-
-
-
 
