@@ -144,7 +144,6 @@ class Send_Request():
         except Exception as e:
             Log().error(e)
 
-
 if __name__ == '__main__':
     # r=Read_Excel().read_data()
     # r1=r[0]
