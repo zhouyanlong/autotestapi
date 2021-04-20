@@ -15,5 +15,3 @@ testpydir=os.path.join(testdir,"testcase")
 
 
 
-if __name__ == '__main__':
-    print(testcasedir,testcaseadmindir)
