@@ -30,8 +30,4 @@ if __name__ == '__main__':
     #可以直接类名.方法名调用,无法调用类里的属性（如self.name）
     TestMethod.method2()
     TestMethod.method3()
-    a=[1,2,3]
-    for j in a:
-        print(j)
-
 
