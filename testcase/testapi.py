@@ -13,9 +13,8 @@ from testtool import setting
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 test_data=Read_Excel().read_data(setting.testcasedir)
-importdata=Read_Excel().read_importdata()
-#Read_Excel().update_importdata()
-Send_Request().send_import(importdata)
+#importdata=Read_Excel().read_importdata()
+#Send_Request().send_import(importdata)
 session=login()
 @ddt.ddt
 class TestApi(unittest.TestCase):

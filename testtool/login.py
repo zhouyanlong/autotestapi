@@ -8,7 +8,7 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 def login():
     requests.packages.urllib3.disable_warnings()
-    data={'url': 'https://test.robotsh.com/api/business/login', 'headers':'{"Content-Type": "application/json;charset=UTF-8", "Accept": "application/json, text/plain, */*"}','method': 'post', 'body': '{"account":"zhou3","password":"Aa123456.","platform":"robot"}'}
+    data={'url': 'https://ai.zhilingsd.com/api/business/login', 'headers':'{"Content-Type": "application/json;charset=UTF-8", "Accept": "application/json, text/plain, */*"}','method': 'post', 'body': '{"account":"zhou3","password":"Aa123456.","platform":"robot"}'}
     res=requests.request(url=data["url"],method=data["method"],headers=eval(data["headers"]),data=data["body"],verify=False)
     re=res.json()
     session_data=re["data"]["session"]

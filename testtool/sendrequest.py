@@ -4,6 +4,7 @@ from testtool.readexcel import Read_Excel
 from testtool.mylog import Log
 from testtool.login import login
 import urllib3
+from testtool import setting
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 class Send_Request():
     def send_req(self,data,session):
@@ -145,15 +146,18 @@ class Send_Request():
             Log().error(e)
 
 if __name__ == '__main__':
-    # r=Read_Excel().read_data()
-    # r1=r[0]
-    # print(r1)
+    r=Read_Excel().read_data(setting.testcasedir)
+    r1=r[0]
+    print(r1)
     # re=Send_Request().get_list_data(r1,login(),"upStatus")
     # print(re,type(re))
-    a=Read_Excel().read_importdata()
-    Send_Request().send_import(a)
-    # re=Send_Request().send_req(r1,login())
-    # print(re.json())
+    #a=Read_Excel().read_importdata()
+    #Send_Request().send_import(a)
+    re=Send_Request().send_req(r1,login())
+    #re.content.decode("utf-8")
+    #print(re.text)
+    print(re)
+    #print(re.json())
     # body=eval(re.request.body)
     # m=body["method"]
     # me=str(m)+"_response"
