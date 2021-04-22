@@ -16,9 +16,9 @@ def login():
     Log().info("商户端获取到的session为{}".format(session))
     return session
 def adminlogin():
-    data = {'url': 'https://admintest.robot.com/api/manage/login',
+    data = {'url': 'https://op.zhilingsd.com/api/manage/login',
             'headers': '{"Content-Type": "application/json;charset=UTF-8","Accept": "application/json, text/plain, */*"}',
-            'method': 'post', 'body': '{"account":"zhouyanlong1","password":"Aa123456@"}'}
+            'method': 'post', 'body': '{"account":"zhouyanlong","password":"Aa123456@"}'}
     res = requests.request(url=data["url"], method=data["method"], headers=eval(data["headers"]), data=data["body"],verify=False)
     re = res.json()
     session_data = re["data"]["session"]

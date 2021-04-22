@@ -4,7 +4,6 @@ from testtool.readexcel import Read_Excel
 from testtool.sendrequest import Send_Request
 from testtool.mylog import Log
 from testtool.login import adminlogin
-from testtool.dbmysql import DB
 from testtool import setting
 import urllib3
 
@@ -42,20 +41,6 @@ class TestadminApi(unittest.TestCase):
             self.assertEqual(res_code, int(testdata["code"]),
                              "响应code为{0}，预期code为{1}".format(res_code, testdata["code"]))
             self.assertEqual(res_msg, testdata["msg"], "响应msg为{0}，预期msg为{1}".format(res_msg, testdata["msg"]))
-        # 需要sql校验
-        elif testdata["sqldata"] is not None:
-            db = eval(testdata["sqldata"])[0]
-            sql = eval(testdata["sqldata"])[1]
-            sql_assert = testdata["sqlassert"]
-            sql_res = DB().select(db, sql)
-            Log().info("sql查询的结果为{}，预期结果为{}".format(str(sql_res), sql_assert))
-            if str(sql_res) == sql_assert:
-                Read_Excel().write_excel(int(testdata["id"]) - 174, "成功",setting.testcaseadmindir)
-                Log().info("用例{}：成功".format(testdata["id"]))
-            else:
-                Read_Excel().write_excel(int(testdata["id"]) - 174, "失败",setting.testcaseadmindir)
-                Log().info("用例{}：失败".format(testdata["id"]))
-            self.assertEqual(str(sql_res), sql_assert, "sql查询的结果为{}，预期结果为{}".format(str(sql_res), sql_assert))
         # 返回字典
         elif testdata["checkdata"] is not None and testdata["body"].find("pageSize") != -1:
             Log().info("请求包含分页，响应的字典数据为{}".format(res[method]))

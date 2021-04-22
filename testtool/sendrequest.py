@@ -37,8 +37,8 @@ class Send_Request():
         except Exception as e:
             Log().error(e)
         return res
-    #获取response的list数据
-    def get_list_data(self,data,session,key):
+    #获取response的特定menu数据
+    def get_list_data(self,menu,data,session,key):
         try:
             if data["url"]:
                 url=data["url"]
@@ -68,14 +68,18 @@ class Send_Request():
             body = eval(res.request.body)
             me = body["method"]
             method = str(me) + "_response"
-            re = res.json()[method]["list"]
-            Log().info("响应的list数据为{}".format(re))
-            value=re[0][key]
-            for r in re:
-                if r[key]==value:
-                    return value
-                else:
-                    return False
+            if menu!=None:
+                re = res.json()[method][menu]
+                value = re[0][key]
+                for r in re:
+                    if r[key] == value:
+                        Log().info("checkvalue=3时响应的value数据为{}".format(value))
+                        return value
+                    else:
+                        return False
+            else:
+                value = res.json()[method][key]
+                Log().info("checkvalue=2时响应的value数据为{}".format(value))
         except Exception as e:
             Log().error(e)
     #获取响应类型为list的数据
@@ -157,7 +161,7 @@ if __name__ == '__main__':
     #re.content.decode("utf-8")
     #print(re.text)
     print(re)
-    #print(re.json())
+    print(re.json())
     # body=eval(re.request.body)
     # m=body["method"]
     # me=str(m)+"_response"
