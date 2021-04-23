@@ -24,7 +24,13 @@ class Send_Request():
             else:
                 h=None
             if data["body"]:
-                body1=eval(data["body"])
+                a=data["body"]
+                if a.find("${id}") != -1:
+                    number = Read_Excel().read_id("phone", setting.testcasedir)
+                    print(number)
+                    print("商户端替换id")
+                    a = a.replace("${id}", number)
+                body1=eval(a)
                 body=dict(body1,**session)
                 Log().info("合并后的data为{}".format(body))
             else:
@@ -55,10 +61,17 @@ class Send_Request():
             else:
                 h=None
             if data["body"]:
-                body1=eval(data["body"])
-                body=dict(body1,**session)
+                a = data["body"]
+                if a.find("${id}") != -1:
+                    number = Read_Excel().read_id("phone", setting.testcasedir)
+                    print(number)
+                    print("商户端替换id")
+                    a = a.replace("${id}", number)
+                body1 = eval(a)
+                body = dict(body1, **session)
+                Log().info("合并后的data为{}".format(body))
             else:
-                body=None
+                body = None
         except Exception as e:
             Log().error(e)
         try:

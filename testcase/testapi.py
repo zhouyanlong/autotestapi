@@ -46,34 +46,35 @@ class TestApi(unittest.TestCase):
             self.assertEqual(res_code, int(testdata["code"]),"响应code为{0}，预期code为{1}".format(res_code, testdata["code"]))
             self.assertEqual(res_msg, testdata["msg"], "响应msg为{0}，预期msg为{1}".format(res_msg, testdata["msg"]))
         #返回""，即引起表内数据变化
-        elif "" in res.values():
-            #需要将生成的id写入，作为传参传给其他接口
-            if testdata["sqldata"] is not None:
-                self.assertEqual(res_code, int(testdata["code"]),"响应code为{0}，预期code为{1}".format(res_code, testdata["code"]))
-                self.assertEqual(res_msg, testdata["msg"], "响应msg为{0}，预期msg为{1}".format(res_msg, testdata["msg"]))
-            #断言状态码，接口生成数据由查询去断言
+        elif "" in res.values() or "{'data':true}" in res.values():
+            # 断言状态码，接口生成数据由查询去断言
+            if re.status_code == 200:
+                Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcasedir)
+                Log().info("用例{}：成功".format(testdata["id"]))
             else:
-                if re.status_code == 200:
-                    Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcasedir)
-                    Log().info("用例{}：成功".format(testdata["id"]))
-                else:
-                    Read_Excel().write_excel(int(testdata["id"]) + 1, "失败", setting.testcasedir)
-                    Log().info("用例{}：失败".format(testdata["id"]))
-                self.assertEqual(re.status_code, 200,"响应状态码为{0}，预期状态码为200".format(re.status_code))
-
+                Read_Excel().write_excel(int(testdata["id"]) + 1, "失败", setting.testcasedir)
+                Log().info("用例{}：失败".format(testdata["id"]))
+            self.assertEqual(re.status_code, 200, "响应状态码为{0}，预期状态码为200".format(re.status_code))
 
 
         #响应结果返回字典
-        #elif testdata["checkdata"] is not None and testdata["body"].find("pageSize")!=-1 and str(type(res[method]))=="<class 'dict'>":
         elif str(type(res[method])) == "<class 'dict'>":
-            Log().info("请求包含分页，响应的字典数据为{}".format(res[method]))
+            Log().info("响应的字典数据为{}".format(res[method]))
             #判断checkdata是不是有三个值，用于断言list里的数据
-            if len(testdata['checkdata'])==3:
+            print(testdata['checkdata'])
+            if len(eval(testdata['checkdata'])) == 3:
                 checkmenu = eval(testdata['checkdata'])[0]
                 checkkey = eval(testdata['checkdata'])[1]
                 checkvalue = eval(testdata['checkdata'])[2]
                 res_list = Send_Request().get_list_data(checkmenu,testdata, session, checkkey)
                 Log().info("响应中需要断言的数据为{},checkvalue为{}".format(res_list, checkvalue))
+                #写入id
+                if testdata["sqldata"] is not None:
+                    tempid=str(testdata["sqldata"])
+                    res_list_id = Send_Request().get_list_data("list", testdata, session, tempid)
+                    Read_Excel().write_id(int(testdata["id"]) + 1,res_list_id, setting.testcasedir)
+                    Log().info("需要写入的是{}，写入的值是{}".format(tempid, res_list_id))
+
                 if str(res_list) == checkvalue:
                     Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcasedir)
                     Log().info("用例{}：成功".format(testdata["id"]))
@@ -82,7 +83,7 @@ class TestApi(unittest.TestCase):
                     Log().info("用例{}：失败".format(testdata["id"]))
                 self.assertEqual(str(res_list), checkvalue, "响应data为{0}，预期data为{1}".format(str(res_list), checkvalue))
             #判断checkdata是不是有两个值，用于断言部分接口比如报表
-            elif len(testdata['checkdata'])==2:
+            elif len(eval(testdata['checkdata']))==2:
                 checkmenu=None
                 checkkey = eval(testdata['checkdata'])[0]
                 checkvalue = eval(testdata['checkdata'])[1]

@@ -140,6 +140,18 @@ class Read_Excel():
         sheet.cell(2, 7).value = codenew
         Log().info("更新后的packet:{}，namenum:{}，code:{}".format(sheet.cell(2, 5).value,sheet.cell(2, 6).value,sheet.cell(2, 7).value))
         wb.save(file)
+    def write_id(self,i,value,file):
+        wb=openpyxl.load_workbook(file)
+        sheet=wb["Sheet1"]
+        sheet.cell(i,12).value=value
+        wb.save(file)
+    def read_id(self,flag,file):
+        wb=openpyxl.load_workbook(file)
+        sheet=wb["Sheet1"]
+        if flag=="phone":
+            return sheet.cell(151, 12).value
+        elif flag=="id":
+            pass
 
 
 
