@@ -45,17 +45,6 @@ class TestApi(unittest.TestCase):
                 Log().info("用例{}：失败".format(testdata["id"]))
             self.assertEqual(res_code, int(testdata["code"]),"响应code为{0}，预期code为{1}".format(res_code, testdata["code"]))
             self.assertEqual(res_msg, testdata["msg"], "响应msg为{0}，预期msg为{1}".format(res_msg, testdata["msg"]))
-        #返回""，即引起表内数据变化
-        elif "" in res.values() or "{'data':true}" in res.values():
-            # 断言状态码，接口生成数据由查询去断言
-            if re.status_code == 200:
-                Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcasedir)
-                Log().info("用例{}：成功".format(testdata["id"]))
-            else:
-                Read_Excel().write_excel(int(testdata["id"]) + 1, "失败", setting.testcasedir)
-                Log().info("用例{}：失败".format(testdata["id"]))
-            self.assertEqual(re.status_code, 200, "响应状态码为{0}，预期状态码为200".format(re.status_code))
-
 
         #响应结果返回字典
         elif str(type(res[method])) == "<class 'dict'>":
@@ -96,9 +85,17 @@ class TestApi(unittest.TestCase):
                     Read_Excel().write_excel(int(testdata["id"]) + 1, "失败", setting.testcasedir)
                     Log().info("用例{}：失败".format(testdata["id"]))
                 self.assertEqual(str(res_list), checkvalue, "响应data为{0}，预期data为{1}".format(str(res_list), checkvalue))
-
+            #断言状态码
+            elif eval(testdata['checkdata'])[0]=="状态码":
+                if re.status_code == 200:
+                    Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcaseadmindir)
+                    Log().info("用例{}断言状态码：成功".format(testdata["id"]))
+                else:
+                    Read_Excel().write_excel(int(testdata["id"]) + 1, "失败", setting.testcaseadmindir)
+                    Log().info("用例{}断言状态码：失败".format(testdata["id"]))
+                self.assertEqual(re.status_code, 200, "响应状态码为{0}，预期状态码为200".format(re.status_code))
             #checkdata没有二或者三个值，则说明返回的list为空，断言total即可
-            else:
+            elif eval(testdata['checkdata'])[0]=="total":
                 Log().info("响应结果预期应该为空，响应的total为{}".format(res[method]["total"]))
                 if int(res[method]["total"]) == 0:
                     Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcasedir)

@@ -79,13 +79,19 @@ if __name__ == '__main__':
     # else:
     #     print("没有")
 
-    a=["list","phone","13192293666"]
-    print(len(a))
-
-
-
-
-
+    # a=["list","phone","13192293666"]
+    # print(len(a))
+    # a={"call_line_group_delete_line_group_response":{"data":true}}
+    # print(a.values())
+    # if "dict_values([{'data': True}])" in str(a.values()):
+    #     print("ttt")
+    asd=str({"method":"call_line_group_delete_line_group","timestamp":"2021-04-25 15:56:24","data":{"id":"${linesupplierid}"}})
+    def rr(a):
+        if a.find("${linesupplierid}") != -1:
+            print("ttt")
+            a = a.replace("${linesupplierid}", "number")
+            return a
+    print(rr(asd))
 
 
 

@@ -9,7 +9,7 @@ import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 test_data = Read_Excel().read_data(setting.testcaseadmindir)
-Read_Excel().update_importdata()
+#Read_Excel().update_importdata()
 session = adminlogin()
 @ddt.ddt
 class TestadminApi(unittest.TestCase):
@@ -18,7 +18,7 @@ class TestadminApi(unittest.TestCase):
 
     @ddt.data(*test_data)
     def test_case(self, testdata):
-        Log().info("管理端用例{}:{}正在执行".format(testdata["id"], testdata["usecase"]))
+        Log().info("用例{}:{}正在执行".format(testdata["id"], testdata["usecase"]))
         Log().info("用例{}的请求数据为{}".format(testdata["id"], testdata))
         Log().info("session为{},类型为{}".format(session, type(session)))
         re = Send_Request().send_req(testdata, session)
@@ -33,56 +33,96 @@ class TestadminApi(unittest.TestCase):
             res_msg = res["error_response"]["msg"]
             Log().info("用例{}的响应code为{},响应msg为{}".format(testdata["id"], res_code, res_msg))
             if res_code == int(testdata["code"]) and res_msg == testdata["msg"]:
-                Read_Excel().write_excel(int(testdata["id"]) - 174, "成功",setting.testcaseadmindir)
-                Log().info("用例{}：成功".format(testdata["id"]))
+                Read_Excel().write_excel(int(testdata["id"]) - 181, "成功", setting.testcaseadmindir)
+                Log().info("用例{}断言error_res：成功".format(testdata["id"]))
             else:
-                Read_Excel().write_excel(int(testdata["id"]) - 174, "失败",setting.testcaseadmindir)
-                Log().info("用例{}：失败".format(testdata["id"]))
+                Read_Excel().write_excel(int(testdata["id"]) - 181, "失败", setting.testcaseadmindir)
+                Log().info("用例{}error_res：失败".format(testdata["id"]))
             self.assertEqual(res_code, int(testdata["code"]),
                              "响应code为{0}，预期code为{1}".format(res_code, testdata["code"]))
             self.assertEqual(res_msg, testdata["msg"], "响应msg为{0}，预期msg为{1}".format(res_msg, testdata["msg"]))
-        # 返回字典
-        elif testdata["checkdata"] is not None and testdata["body"].find("pageSize") != -1:
-            Log().info("请求包含分页，响应的字典数据为{}".format(res[method]))
-            checkkey = eval(testdata['checkdata'])[0]
-            checkvalue = eval(testdata['checkdata'])[1]
-            res_list = Send_Request().get_list_data(testdata, session, checkkey)
-            Log().info("响应中需要断言的数据为{},checkvalue为{}".format(res_list, checkvalue))
-            if str(res_list) == checkvalue:
-                Read_Excel().write_excel(int(testdata["id"]) - 174, "成功",setting.testcaseadmindir)
-                Log().info("用例{}：成功".format(testdata["id"]))
-            else:
-                Read_Excel().write_excel(int(testdata["id"]) - 174, "失败",setting.testcaseadmindir)
-                Log().info("用例{}：失败".format(testdata["id"]))
-            self.assertEqual(str(res_list), checkvalue, "响应data为{0}，预期data为{1}".format(str(res_list), checkvalue))
+
+        # 响应结果返回字典
+        elif str(type(res[method])) == "<class 'dict'>":
+            Log().info("响应的字典数据为{}".format(res[method]))
+            # 判断checkdata是不是有三个值，用于断言list里的数据
+            print(testdata['checkdata'])
+            if len(eval(testdata['checkdata'])) == 3:
+                checkmenu = eval(testdata['checkdata'])[0]
+                checkkey = eval(testdata['checkdata'])[1]
+                checkvalue = eval(testdata['checkdata'])[2]
+                res_list = Send_Request().get_list_data(checkmenu, testdata, session, checkkey)
+                Log().info("响应中需要断言的数据为{},checkvalue为{}".format(res_list, checkvalue))
+                # 写入id
+                if testdata["sqldata"] is not None:
+                    tempid = str(testdata["sqldata"])
+                    res_list_id = Send_Request().get_list_data("list", testdata, session, tempid)
+                    Read_Excel().write_id(int(testdata["id"]) - 181, res_list_id, setting.testcaseadmindir)
+                    Log().info("需要写入的是{}，写入的值是{}".format(tempid, res_list_id))
+
+                if str(res_list) == checkvalue:
+                    Read_Excel().write_excel(int(testdata["id"]) - 181, "成功", setting.testcaseadmindir)
+                    Log().info("用例{}断言checkvalue：成功".format(testdata["id"]))
+                else:
+                    Read_Excel().write_excel(int(testdata["id"]) - 181, "失败", setting.testcaseadmindir)
+                    Log().info("用例{}断言checkvalue：失败".format(testdata["id"]))
+                self.assertEqual(str(res_list), checkvalue, "响应data为{0}，预期data为{1}".format(str(res_list), checkvalue))
+            # 判断checkdata是不是有两个值，用于断言部分接口比如报表
+            elif len(eval(testdata['checkdata'])) == 2:
+                checkmenu = None
+                checkkey = eval(testdata['checkdata'])[0]
+                checkvalue = eval(testdata['checkdata'])[1]
+                res_list = Send_Request().get_list_data(checkmenu, testdata, session, checkkey)
+                Log().info("响应中需要断言的数据为{},checkvalue为{}".format(res_list, checkvalue))
+                if str(res_list) == checkvalue:
+                    Read_Excel().write_excel(int(testdata["id"]) - 181, "成功", setting.testcaseadmindir)
+                    Log().info("用例{}断言checkvalue：成功".format(testdata["id"]))
+                else:
+                    Read_Excel().write_excel(int(testdata["id"]) - 181, "失败", setting.testcaseadmindir)
+                    Log().info("用例{}断言checkvalue：失败".format(testdata["id"]))
+                self.assertEqual(str(res_list), checkvalue, "响应data为{0}，预期data为{1}".format(str(res_list), checkvalue))
+            #即引起表内数据变化,断言状态码，接口生成数据由查询去断言
+            elif eval(testdata['checkdata'])[0]=="状态码":
+                if re.status_code == 200:
+                    Read_Excel().write_excel(int(testdata["id"]) - 181, "成功", setting.testcaseadmindir)
+                    Log().info("用例{}断言状态码：成功".format(testdata["id"]))
+                else:
+                    Read_Excel().write_excel(int(testdata["id"]) - 181, "失败", setting.testcaseadmindir)
+                    Log().info("用例{}断言状态码：失败".format(testdata["id"]))
+                self.assertEqual(re.status_code, 200, "响应状态码为{0}，预期状态码为200".format(re.status_code))
+
+            # checkdata没有二或者三个值，则说明返回的list为空，断言total即可
+            elif eval(testdata['checkdata'])[0]=="total":
+                Log().info("响应结果预期应该为空，响应的total为{}".format(res[method]["total"]))
+                if int(res[method]["total"]) == 0:
+                    Read_Excel().write_excel(int(testdata["id"]) - 181, "成功", setting.testcaseadmindir)
+                    Log().info("用例{}断言total：成功".format(testdata["id"]))
+                else:
+                    Read_Excel().write_excel(int(testdata["id"]) - 181, "失败", setting.testcaseadmindir)
+                    Log().info("用例{}断言total：失败".format(testdata["id"]))
+                self.assertEqual(int(res[method]["total"]), 0, "响应data为{0}".format(int(res[method]["total"])))
+
+
         # 返回list
-        elif testdata["checkdata"] is not None and testdata["body"].find("pageSize") == -1:
-            Log().info("请求不包含分页，响应的list数据为{}".format(res[method]))
+        elif str(type(res[method])) == "<class 'list'>":
+            Log().info("响应的list数据为{}".format(res[method]))
             checkkey = eval(testdata['checkdata'])[0]
             checkvalue = eval(testdata['checkdata'])[1]
             res_list = Send_Request().get_res_data(testdata, session, checkkey)
-            Log().info("响应中需要断言的数据为{},checkvalue为{}".format(res_list, checkvalue))
+            variable = Send_Request().get_res_data(testdata, session, "id")
+            if testdata["sqldata"] is not None:
+                tempid = str(testdata["sqldata"])
+                Read_Excel().write_id(int(testdata["id"]) - 181, variable, setting.testcaseadmindir)
+                Log().info("需要写入的是{}，写入的值是{}".format(tempid, variable))
+                Log().info("响应中需要断言的数据为{},checkvalue为{}".format(res_list, checkvalue))
+            #res_list = Send_Request().get_res_data(testdata, session, checkkey)
             if res_list == checkvalue:
-                Read_Excel().write_excel(int(testdata["id"]) - 174, "成功",setting.testcaseadmindir)
-                Log().info("用例{}：成功".format(testdata["id"]))
+                Read_Excel().write_excel(int(testdata["id"]) - 181, "成功", setting.testcaseadmindir)
+                Log().info("用例{}断言list的checkvalue：成功".format(testdata["id"]))
             else:
-                Read_Excel().write_excel(int(testdata["id"]) - 174, "失败",setting.testcaseadmindir)
-                Log().info("用例{}：失败".format(testdata["id"]))
+                Read_Excel().write_excel(int(testdata["id"]) - 181, "失败", setting.testcaseadmindir)
+                Log().info("用例{}断言list的checkvalue：失败".format(testdata["id"]))
             self.assertEqual(res_list, checkvalue, "响应data为{0}，预期data为{1}".format(res_list, checkvalue))
-
-        # 返回为空
-        elif testdata["checkdata"] is None and "total" in res[method].keys():
-            Log().info("响应结果应该为空，响应的total为{}".format(res[method]["total"]))
-            if int(res[method]["total"]) == 0:
-                Read_Excel().write_excel(int(testdata["id"]) - 174, "成功",setting.testcaseadmindir)
-                Log().info("用例{}：成功".format(testdata["id"]))
-            else:
-                Read_Excel().write_excel(int(testdata["id"]) - 174, "失败",setting.testcaseadmindir)
-                Log().info("用例{}：失败".format(testdata["id"]))
-            self.assertEqual(int(res[method]["total"]), 0, "响应data为{0}".format(int(res[method]["total"])))
-        else:
-            Read_Excel().write_excel(int(testdata["id"]) - 174, "成功",setting.testcaseadmindir)
-            Log().info("用例{}：成功".format(testdata["id"]))
 
     def tearDown(self) -> None:
         Log().info("test ends")

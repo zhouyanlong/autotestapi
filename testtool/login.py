@@ -18,7 +18,7 @@ def login():
 def adminlogin():
     data = {'url': 'https://op.zhilingsd.com/api/manage/login',
             'headers': '{"Content-Type": "application/json;charset=UTF-8","Accept": "application/json, text/plain, */*"}',
-            'method': 'post', 'body': '{"account":"zhouyanlong","password":"Aa123456@"}'}
+            'method': 'post', 'body': '{"account":"zhouyanlong","password":"Aa123456."}'}
     res = requests.request(url=data["url"], method=data["method"], headers=eval(data["headers"]), data=data["body"],verify=False)
     re = res.json()
     session_data = re["data"]["session"]
@@ -27,5 +27,5 @@ def adminlogin():
     return session
 
 if __name__ == '__main__':
-    login()
+    #login()
     adminlogin()

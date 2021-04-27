@@ -36,6 +36,9 @@ class Read_Excel():
                         body = body.replace('${endtime}', str(apidata["endtime"]))
                     if body.find('${startDate}') != -1:
                         body = body.replace('${startDate}', str(apidata["startDate"]))
+                    if body.find("${taskname}") != -1:
+                        body = body.replace("${taskname}", str(apidata["taskname"]))
+
 
                 code = sheet.cell(i, 8).value
                 msg = sheet.cell(i, 9).value
@@ -49,7 +52,10 @@ class Read_Excel():
                         checkdata = checkdata.replace("${customercode}", str(apidata["customercode"]))
                     if checkdata.find("${name}") != -1:
                         checkdata = checkdata.replace("${name}", str(apidata["name"]))
-
+                    if checkdata.find("${taskname}") != -1:
+                        checkdata = checkdata.replace("${taskname}", str(apidata["taskname"]))
+                    if checkdata.find('${startDate}') != -1:
+                        checkdata = checkdata.replace('${startDate}', str(apidata["startDate"]))
                 sqldata=sheet.cell(i,11).value
                 if sqldata is not None:
                     if sqldata.find("${packet_name}") != -1:
@@ -78,7 +84,7 @@ class Read_Excel():
                 if flag == "all":
                     test_data.append(data)
                 # 从config获取到的值均为str，eval转成list
-                elif id in eval(flag):
+                elif id not in eval(flag):
                     test_data.append(data)
         except Exception as e:
             Log().error(e)
@@ -109,7 +115,7 @@ class Read_Excel():
         endtime = tomorrow.strftime('%Y-%m-%d')
         endtime += " 23:59:59"
         startDate = now.strftime('%Y-%m-%d')
-
+        taskname="testauto任务"+str(namenum)
         name="周彦龙" + str(namenum)
         packetName="test委案"+str(packetName)
         billcode=str(code)+str(code)+"11"
@@ -122,7 +128,7 @@ class Read_Excel():
             body=body.replace("${limitDate}",str(limitDate))
         if body.find("${name}")!=-1:
             body=body.replace("${name}",str(name))
-        data = {"url": url, "headers": headers, "method": method, "body": body,"name":name,"billcode": billcode, "customercode": customercode, "packetName": packetName,"starttime": starttime, "endtime": endtime, "startDate": startDate}
+        data = {"url": url, "headers": headers, "method": method, "body": body,"name":name,"billcode": billcode, "customercode": customercode, "packetName": packetName,"starttime": starttime, "endtime": endtime, "startDate": startDate,"taskname":taskname}
         Log().info("读取导入数据中packetName:{}，name:{}，billcode:{}，customercode:{}".format(packetName,name,billcode,customercode))
         return data
 
@@ -145,13 +151,10 @@ class Read_Excel():
         sheet=wb["Sheet1"]
         sheet.cell(i,12).value=value
         wb.save(file)
-    def read_id(self,flag,file):
+    def read_id(self,i,file):
         wb=openpyxl.load_workbook(file)
         sheet=wb["Sheet1"]
-        if flag=="phone":
-            return sheet.cell(151, 12).value
-        elif flag=="id":
-            pass
+        return sheet.cell(i, 12).value
 
 
 
@@ -163,7 +166,7 @@ if __name__ == '__main__':
     # test1 = Read_Excel().read_importdata()
     # a=eval(test[0]['checkdata'])[0]
     # print(a)
-    test_data = Read_Excel().read_data(setting.testcaseadmindir)
+    test_data = Read_Excel().read_data(setting.testcasedir)
     print(test_data)
 
 
