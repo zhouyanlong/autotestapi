@@ -9,7 +9,7 @@ import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 test_data = Read_Excel().read_data(setting.testcaseadmindir)
-#Read_Excel().update_importdata()
+Read_Excel().update_importdata()
 session = adminlogin()
 @ddt.ddt
 class TestadminApi(unittest.TestCase):

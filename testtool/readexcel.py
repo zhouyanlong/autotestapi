@@ -163,12 +163,12 @@ if __name__ == '__main__':
     #print(test[0]["checkdata"])
     # test = Read_Excel().read_importdata()
     # up=Read_Excel().update_importdata()
-    # test1 = Read_Excel().read_importdata()
+    test1 = Read_Excel().read_importdata()
+    print(test1)
     # a=eval(test[0]['checkdata'])[0]
     # print(a)
-    test_data = Read_Excel().read_data(setting.testcasedir)
-    print(test_data)
-
+    # test_data = Read_Excel().read_data(setting.testcasedir)
+    # print(test_data)
 
 
 
