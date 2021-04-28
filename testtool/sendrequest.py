@@ -223,7 +223,7 @@ class Send_Request():
             Log().info("需要替换的libraryid为{}".format(number))
             a = a.replace("${libraryid}", number)
         if a.find("${soundid}") != -1:
-            number = Read_Excel().read_id(184, setting.testcaseadmindir)
+            number = Read_Excel().read_id(183, setting.testcaseadmindir)
             Log().info("需要替换的soundid为{}".format(number))
             a = a.replace("${soundid}", number)
         if a.find("${stopblackid}") != -1:
