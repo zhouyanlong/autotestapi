@@ -88,10 +88,10 @@ class TestApi(unittest.TestCase):
             #断言状态码
             elif eval(testdata['checkdata'])[0]=="状态码":
                 if re.status_code == 200:
-                    Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcaseadmindir)
+                    Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcasedir)
                     Log().info("用例{}断言状态码：成功".format(testdata["id"]))
                 else:
-                    Read_Excel().write_excel(int(testdata["id"]) + 1, "失败", setting.testcaseadmindir)
+                    Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcasedir)
                     Log().info("用例{}断言状态码：失败".format(testdata["id"]))
                 self.assertEqual(re.status_code, 200, "响应状态码为{0}，预期状态码为200".format(re.status_code))
             #checkdata没有二或者三个值，则说明返回的list为空，断言total即可
@@ -122,10 +122,10 @@ class TestApi(unittest.TestCase):
             self.assertEqual(res_list, checkvalue, "响应data为{0}，预期data为{1}".format(res_list, checkvalue))
         else:
             if re.status_code == 200:
-                Read_Excel().write_excel(int(testdata["id"]) - 181, "成功", setting.testcaseadmindir)
+                Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcasedir)
                 Log().info("用例{}断言状态码：成功".format(testdata["id"]))
             else:
-                Read_Excel().write_excel(int(testdata["id"]) - 181, "失败", setting.testcaseadmindir)
+                Read_Excel().write_excel(int(testdata["id"]) + 1, "失败", setting.testcasedir)
                 Log().info("用例{}断言状态码：失败".format(testdata["id"]))
             self.assertEqual(re.status_code, 200, "响应状态码为{0}，预期状态码为200".format(re.status_code))
 
