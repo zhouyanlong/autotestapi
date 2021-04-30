@@ -50,7 +50,7 @@ class TestApi(unittest.TestCase):
         elif str(type(res[method])) == "<class 'dict'>":
             Log().info("响应的字典数据为{}".format(res[method]))
             #判断checkdata是不是有三个值，用于断言list里的数据
-            print(testdata['checkdata'])
+            #print(testdata['checkdata'])
             if len(eval(testdata['checkdata'])) == 3:
                 checkmenu = eval(testdata['checkdata'])[0]
                 checkkey = eval(testdata['checkdata'])[1]
@@ -120,7 +120,14 @@ class TestApi(unittest.TestCase):
                 Read_Excel().write_excel(int(testdata["id"]) + 1, "失败",setting.testcasedir)
                 Log().info("用例{}：失败".format(testdata["id"]))
             self.assertEqual(res_list, checkvalue, "响应data为{0}，预期data为{1}".format(res_list, checkvalue))
-
+        else:
+            if re.status_code == 200:
+                Read_Excel().write_excel(int(testdata["id"]) - 181, "成功", setting.testcaseadmindir)
+                Log().info("用例{}断言状态码：成功".format(testdata["id"]))
+            else:
+                Read_Excel().write_excel(int(testdata["id"]) - 181, "失败", setting.testcaseadmindir)
+                Log().info("用例{}断言状态码：失败".format(testdata["id"]))
+            self.assertEqual(re.status_code, 200, "响应状态码为{0}，预期状态码为200".format(re.status_code))
 
 
 

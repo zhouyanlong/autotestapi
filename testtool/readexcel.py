@@ -84,7 +84,7 @@ class Read_Excel():
                 if flag == "all":
                     test_data.append(data)
                 # 从config获取到的值均为str，eval转成list
-                elif id not in eval(flag):
+                elif id in eval(flag):
                     test_data.append(data)
         except Exception as e:
             Log().error(e)
@@ -154,7 +154,7 @@ class Read_Excel():
     def read_id(self,i,file):
         wb=openpyxl.load_workbook(file)
         sheet=wb["Sheet1"]
-        return sheet.cell(i, 12).value
+        return str(sheet.cell(i, 12).value)
 
 
 

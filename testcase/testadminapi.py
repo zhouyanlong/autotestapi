@@ -123,7 +123,14 @@ class TestadminApi(unittest.TestCase):
                 Read_Excel().write_excel(int(testdata["id"]) - 181, "失败", setting.testcaseadmindir)
                 Log().info("用例{}断言list的checkvalue：失败".format(testdata["id"]))
             self.assertEqual(res_list, checkvalue, "响应data为{0}，预期data为{1}".format(res_list, checkvalue))
-
+        else:
+            if re.status_code == 200:
+                Read_Excel().write_excel(int(testdata["id"]) - 181, "成功", setting.testcaseadmindir)
+                Log().info("用例{}断言状态码：成功".format(testdata["id"]))
+            else:
+                Read_Excel().write_excel(int(testdata["id"]) - 181, "失败", setting.testcaseadmindir)
+                Log().info("用例{}断言状态码：失败".format(testdata["id"]))
+            self.assertEqual(re.status_code, 200, "响应状态码为{0}，预期状态码为200".format(re.status_code))
     def tearDown(self) -> None:
         Log().info("test ends")
 
