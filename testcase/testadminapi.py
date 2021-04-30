@@ -46,7 +46,7 @@ class TestadminApi(unittest.TestCase):
         elif str(type(res[method])) == "<class 'dict'>":
             Log().info("响应的字典数据为{}".format(res[method]))
             # 判断checkdata是不是有三个值，用于断言list里的数据
-            print(testdata['checkdata'])
+            #print(testdata['checkdata'])
             if len(eval(testdata['checkdata'])) == 3:
                 checkmenu = eval(testdata['checkdata'])[0]
                 checkkey = eval(testdata['checkdata'])[1]

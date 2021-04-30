@@ -213,7 +213,7 @@ class Send_Request():
             number = Read_Excel().read_id(168, setting.testcaseadmindir)
             Log().info("需要替换的linegroupid为{}".format(number))
             a = a.replace("${linegroupid}", number)
-            print("替换后的a为"+a)
+            #print("替换后的a为"+a)
         if a.find("${linesupplierid}") != -1:
             number = Read_Excel().read_id(172, setting.testcaseadmindir)
             Log().info("需要替换的linesupplierid为{}".format(number))
