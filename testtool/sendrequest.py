@@ -71,7 +71,6 @@ class Send_Request():
         try:
             requests.packages.urllib3.disable_warnings()
             res = requests.request(url=url, method=method, headers=h, data=json.dumps(body), verify=False)
-
             body = eval(res.request.body)
             me = body["method"]
             method = str(me) + "_response"

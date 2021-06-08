@@ -40,9 +40,11 @@ class TestApi(unittest.TestCase):
             if res_code == int(testdata["code"]) and res_msg == testdata["msg"]:
                 Read_Excel().write_excel(int(testdata["id"]) + 1, "成功",setting.testcasedir)
                 Log().info("用例{}：成功".format(testdata["id"]))
+                Read_Excel().format_print(testdata,"成功")
             else:
                 Read_Excel().write_excel(int(testdata["id"]) + 1, "失败",setting.testcasedir)
                 Log().info("用例{}：失败".format(testdata["id"]))
+                Read_Excel().format_print(testdata, "失败")
             self.assertEqual(res_code, int(testdata["code"]),"响应code为{0}，预期code为{1}".format(res_code, testdata["code"]))
             self.assertEqual(res_msg, testdata["msg"], "响应msg为{0}，预期msg为{1}".format(res_msg, testdata["msg"]))
 
@@ -67,9 +69,11 @@ class TestApi(unittest.TestCase):
                 if str(res_list) == checkvalue:
                     Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcasedir)
                     Log().info("用例{}：成功".format(testdata["id"]))
+                    Read_Excel().format_print(testdata, "成功")
                 else:
                     Read_Excel().write_excel(int(testdata["id"]) + 1, "失败", setting.testcasedir)
                     Log().info("用例{}：失败".format(testdata["id"]))
+                    Read_Excel().format_print(testdata, "失败")
                 self.assertEqual(str(res_list), checkvalue, "响应data为{0}，预期data为{1}".format(str(res_list), checkvalue))
             #判断checkdata是不是有两个值，用于断言部分接口比如报表
             elif len(eval(testdata['checkdata']))==2:
@@ -81,18 +85,22 @@ class TestApi(unittest.TestCase):
                 if str(res_list) == checkvalue:
                     Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcasedir)
                     Log().info("用例{}：成功".format(testdata["id"]))
+                    Read_Excel().format_print(testdata, "成功")
                 else:
                     Read_Excel().write_excel(int(testdata["id"]) + 1, "失败", setting.testcasedir)
                     Log().info("用例{}：失败".format(testdata["id"]))
+                    Read_Excel().format_print(testdata, "失败")
                 self.assertEqual(str(res_list), checkvalue, "响应data为{0}，预期data为{1}".format(str(res_list), checkvalue))
             #断言状态码
             elif eval(testdata['checkdata'])[0]=="状态码":
                 if re.status_code == 200:
                     Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcasedir)
                     Log().info("用例{}断言状态码：成功".format(testdata["id"]))
+                    Read_Excel().format_print(testdata, "成功")
                 else:
                     Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcasedir)
                     Log().info("用例{}断言状态码：失败".format(testdata["id"]))
+                    Read_Excel().format_print(testdata, "失败")
                 self.assertEqual(re.status_code, 200, "响应状态码为{0}，预期状态码为200".format(re.status_code))
             #checkdata没有二或者三个值，则说明返回的list为空，断言total即可
             elif eval(testdata['checkdata'])[0]=="total":
@@ -100,9 +108,11 @@ class TestApi(unittest.TestCase):
                 if int(res[method]["total"]) == 0:
                     Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcasedir)
                     Log().info("用例{}：成功".format(testdata["id"]))
+                    Read_Excel().format_print(testdata, "成功")
                 else:
                     Read_Excel().write_excel(int(testdata["id"]) + 1, "失败", setting.testcasedir)
                     Log().info("用例{}：失败".format(testdata["id"]))
+                    Read_Excel().format_print(testdata, "失败")
                 self.assertEqual(int(res[method]["total"]), 0, "响应data为{0}".format(int(res[method]["total"])))
 
 
@@ -116,17 +126,21 @@ class TestApi(unittest.TestCase):
             if res_list == checkvalue:
                 Read_Excel().write_excel(int(testdata["id"]) + 1, "成功",setting.testcasedir)
                 Log().info("用例{}：成功".format(testdata["id"]))
+                Read_Excel().format_print(testdata, "成功")
             else:
                 Read_Excel().write_excel(int(testdata["id"]) + 1, "失败",setting.testcasedir)
                 Log().info("用例{}：失败".format(testdata["id"]))
+                Read_Excel().format_print(testdata, "失败")
             self.assertEqual(res_list, checkvalue, "响应data为{0}，预期data为{1}".format(res_list, checkvalue))
         else:
             if re.status_code == 200:
                 Read_Excel().write_excel(int(testdata["id"]) + 1, "成功", setting.testcasedir)
                 Log().info("用例{}断言状态码：成功".format(testdata["id"]))
+                Read_Excel().format_print(testdata, "成功")
             else:
                 Read_Excel().write_excel(int(testdata["id"]) + 1, "失败", setting.testcasedir)
                 Log().info("用例{}断言状态码：失败".format(testdata["id"]))
+                Read_Excel().format_print(testdata, "失败")
             self.assertEqual(re.status_code, 200, "响应状态码为{0}，预期状态码为200".format(re.status_code))
 
 

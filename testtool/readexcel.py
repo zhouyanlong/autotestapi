@@ -155,6 +155,8 @@ class Read_Excel():
         wb=openpyxl.load_workbook(file)
         sheet=wb["Sheet1"]
         return str(sheet.cell(i, 12).value)
+    def format_print(self,testdata,status):
+        print("zlsd_robot_apicase,project=acd3.0,module={0},id={1},usecase={2},body={3} code={4},msg={5},checkdata={6},result={7}".format(testdata["module"],testdata["id"],testdata["usecase"],testdata["body"],testdata["code"],testdata["msg"],testdata["checkdata"],status))
 
 
 
