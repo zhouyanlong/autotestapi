@@ -1,2 +1,7 @@
 2021-04-19 09:20:58,163 - 接口测试 - INFO - 商户端获取到的session为{'session': 'user_session_cache:business:robot:1453396611397713920:629765ae-5805-4218-bcc1-d3d99da9412a'}
 2021-04-19 09:20:59,159 - 接口测试 - INFO - 管理端获取到的session为{'session': 'user_session_cache:manage:0a5646ac-d752-478d-8e2c-c54a1b4e297c'}
+2021-06-08 10:11:19,873 - 接口测试 - INFO - 商户端获取到的session为{'session': 'user_session_cache:business:robot_cuishou:1453396611397713920:4d8b1e5c-997b-41e3-b3b9-e7e3ff751164'}
+2021-06-09 15:45:49,859 - 接口测试 - INFO - 商户端获取到的session为{'session': 'user_session_cache:business:robot_cuishou:1453396611397713920:8694849e-e4da-42b9-a24b-cd17a41e0be3'}
+2021-06-09 15:45:50,043 - 接口测试 - INFO - 管理端获取到的session为{'session': 'user_session_cache:manage:8fc59273-2803-4046-8803-546b8af1c51f'}
+2021-06-09 15:53:50,500 - 接口测试 - INFO - 商户端获取到的session为{'session': 'user_session_cache:business:robot_cuishou:1453396611397713920:08d96ca6-5066-407d-912b-740e7c9b6659'}
+2021-06-09 15:53:50,809 - 接口测试 - INFO - 管理端获取到的session为{'session': 'user_session_cache:manage:acf20789-b538-420b-8231-4dc7a334e69b'}
