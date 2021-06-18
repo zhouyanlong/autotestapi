@@ -27,3 +27,5 @@ class TestMethod():
 
 d=time.strftime("%Y%m%d%H%M%S", time.localtime())
 print(type(d))
+
+print(time.time())
