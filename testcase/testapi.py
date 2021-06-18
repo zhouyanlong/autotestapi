@@ -75,6 +75,7 @@ class TestApi(unittest.TestCase):
                     Log().info("用例{}：失败".format(testdata["id"]))
                     Read_Excel().format_print(testdata, "失败")
                 self.assertEqual(str(res_list), checkvalue, "响应data为{0}，预期data为{1}".format(str(res_list), checkvalue))
+
             #判断checkdata是不是有两个值，用于断言部分接口比如报表
             elif len(eval(testdata['checkdata']))==2:
                 checkmenu=None
